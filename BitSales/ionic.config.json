@@ -1,0 +1,7 @@
+{
+  "name": "BitSales",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+ion-content {
+  --background: none;
+  background-image: url('/assets/image/registro-background.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 16px;
+}
+
+.registro-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible !important;
+}
+
+ion-card {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 12px #00ffff;
+  color: white;
+  backdrop-filter: blur(6px);
+  overflow: visible !important
+}
+
+ion-card-title {
+  text-align: center;
+  color: white;
+  font-size: 1.4rem;
+  margin-top: 8px;
+}
+
+ion-item {
+  --background: transparent;
+  border: 1px solid #00ffff;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+ion-input {
+
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+ion-button {
+  width: 100%;
+  max-width: 280px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+
+
+ion-input[type="date"] {
+  --background: #2e2e2e;
+  background-color: #2e2e2e;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.material-datepicker {
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 16px;
+  z-index: 9999;
+}
+

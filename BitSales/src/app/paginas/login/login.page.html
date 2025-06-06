@@ -1,0 +1,31 @@
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Iniciar Sesión</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <ion-item>
+  <ion-input formControlName="usuario" placeholder="Nombre de usuario" required></ion-input>
+</ion-item>
+
+
+<ion-item>
+  <ion-input
+    type="password"
+    placeholder="Contraseña"
+    formControlName="contrasena"
+    required>
+  </ion-input>
+</ion-item>
+
+
+          <ion-button expand="block" type="submit">Entrar</ion-button>
+          <ion-button expand="block" fill="clear" color="light" (click)="irARegistro()">Registrarse</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
