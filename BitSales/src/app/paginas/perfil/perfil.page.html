@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar class="encabezado-oscuro">
+    <ion-title class="titulo-bitsales">Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="perfil-content">
+  <ion-grid class="perfil-grid">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Completa tu perfil</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <form [formGroup]="perfilForm" (ngSubmit)="guardarPerfil()">
+              <ion-item>
+                <ion-input formControlName="nombreCompleto" placeholder="Nombre completo"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input formControlName="telefono" placeholder="Número de teléfono" type="tel"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Plataforma preferida</ion-label>
+                <ion-select formControlName="plataforma">
+                  <ion-select-option value="PC">PC</ion-select-option>
+                  <ion-select-option value="PlayStation">PlayStation</ion-select-option>
+                  <ion-select-option value="Xbox">Xbox</ion-select-option>
+                  <ion-select-option value="Nintendo">Nintendo</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Categorías favoritas</ion-label>
+                <ion-select formControlName="categorias" multiple="true">
+                  <ion-select-option value="Acción">Acción</ion-select-option>
+                  <ion-select-option value="Aventura">Aventura</ion-select-option>
+                  <ion-select-option value="Terror">Terror</ion-select-option>
+                  <ion-select-option value="Rol">Rol</ion-select-option>
+                  <ion-select-option value="Deportes">Deportes</ion-select-option>
+                  <ion-select-option value="Estrategia">Estrategia</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <ion-item>
+                <ion-textarea formControlName="descripcion" placeholder="Biografía o descripción corta" rows="3"></ion-textarea>
+              </ion-item>
+
+              <ion-item>
+                <ion-input formControlName="avatar" placeholder="URL de avatar (opcional)"></ion-input>
+              </ion-item>
+
+              <ion-button expand="block" type="submit">Guardar Perfil</ion-button>
+              <ion-button expand="block" fill="clear" color="light" (click)="volverInicio()">
+  Volver al inicio
+</ion-button>
+
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar class="encabezado-oscuro">
+    <ion-title class="titulo-bitsales">📰 Noticias Gamer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="noticias-content">
+  <ion-list>
+    <ion-item *ngFor="let noticia of noticias" class="noticia-item">
+      <ion-thumbnail slot="start">
+        <img [src]="noticia.imagen" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ noticia.titulo }}</h2>
+        <p>{{ noticia.descripcion }}</p>
+        <ion-button size="small" fill="clear" (click)="abrirEnlace(noticia.link)">
+          Leer más
+        </ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- ✅ Mover aquí el botón -->
+  <ion-button expand="block" fill="solid" color="tertiary" routerLink="/home" class="btn-volver">
+  ← Volver al inicio
+</ion-button>
+</ion-content>
