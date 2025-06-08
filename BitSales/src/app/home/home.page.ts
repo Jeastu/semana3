@@ -1,5 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { IonPopover } from '@ionic/angular';
+
+
+
+
+
+
 
 @Component({
   selector: 'app-home',
@@ -8,6 +15,8 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class HomePage implements OnInit {
+  @ViewChild('popover') popoverRef!: ElementRef<IonPopover>;
+
   usuario: string = '';
   menuVisible = false;
   menuEvent: any;
@@ -89,8 +98,18 @@ export class HomePage implements OnInit {
   }
 
   irAlPerfil() {
-    this.router.navigate(['/perfil']); // asegúrate de crear esta ruta pronto
-  }
+  this.menuVisible = false; // Cierra el popover visualmente
+  setTimeout(() => {
+    this.router.navigate(['/perfil']);
+  }, 150); // Espera a que el popover se cierre antes de navegar
+}
+
+
+irANoticias() {
+  this.router.navigate(['/noticias']);
+}
+
+
 
   abrirEnlace(link: string) {
     window.open(link, '_blank');

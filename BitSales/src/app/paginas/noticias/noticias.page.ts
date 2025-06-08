@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
+import { createAnimation } from '@ionic/angular';
 
 @Component({
   selector: 'app-noticias',
@@ -6,8 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./noticias.page.scss'],
   standalone: false,
 })
-export class NoticiasPage implements OnInit {
-
+export class NoticiasPage implements OnInit, AfterViewInit {
   noticias = [
     {
       titulo: 'IGN anuncia nuevos lanzamientos para 2025',
@@ -29,9 +29,23 @@ export class NoticiasPage implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {}
+
+  ngAfterViewInit() {
+    const items = document.querySelectorAll('.noticia-item');
+
+    items.forEach((item, i) => {
+      const anim = createAnimation()
+        .addElement(item)
+        .duration(500)
+        .delay(i * 100) // efecto escalonado
+        .fromTo('opacity', '0', '1')
+        .fromTo('transform', 'translateY(20px)', 'translateY(0)');
+      anim.play();
+    });
+  }
 
   abrirEnlace(link: string) {
     window.open(link, '_blank');

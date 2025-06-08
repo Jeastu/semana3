@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { createAnimation } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil',
@@ -23,11 +24,26 @@ ngOnInit() {
     avatar: ['']
   });
 
+  // Cargar datos guardados (si existen)
   const datosGuardados = localStorage.getItem('perfil');
   if (datosGuardados) {
     this.perfilForm.setValue(JSON.parse(datosGuardados));
   }
+
+  // ✨ Animación de entrada
+  const animacionEntrada = createAnimation()
+    .addElement(document.querySelector('ion-content')!)
+    .duration(500)
+    .easing('ease-in-out')
+    .fromTo('opacity', '0', '1')
+    .fromTo('transform', 'translateY(20px)', 'translateY(0px)');
+
+  animacionEntrada.play();
 }
+
+
+
+
 
 guardarPerfil() {
   const datos = this.perfilForm.value;

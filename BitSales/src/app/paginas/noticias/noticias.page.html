@@ -8,6 +8,7 @@
 <ion-content [fullscreen]="true" class="noticias-content">
   <ion-list>
     <ion-item *ngFor="let noticia of noticias" class="noticia-item">
+
       <ion-thumbnail slot="start">
         <img [src]="noticia.imagen" />
       </ion-thumbnail>
