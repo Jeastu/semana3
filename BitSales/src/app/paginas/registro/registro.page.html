@@ -8,50 +8,72 @@
       <ion-card-content>
         <form [formGroup]="registroForm" (ngSubmit)="registrar()" style="display: flex; flex-direction: column; align-items: center;">
           
+          <!-- Usuario -->
           <ion-item>
             <ion-input formControlName="usuario" placeholder="Nombre de usuario" required></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="f['usuario'].touched && f['usuario'].errors?.['required']">
+            <small>El nombre de usuario es obligatorio</small>
+          </ion-text>
 
+          <!-- Correo -->
           <ion-item>
-  <ion-input type="email" formControlName="correo" placeholder="Correo" required></ion-input>
-</ion-item>
-<ion-text color="danger" *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched">
-  <small>Correo inválido</small>
-</ion-text>
+            <ion-input type="email" formControlName="correo" placeholder="Correo" required></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="f['correo'].touched && f['correo'].errors?.['required']">
+            <small>El correo es obligatorio</small>
+          </ion-text>
+          <ion-text color="danger" *ngIf="f['correo'].touched && f['correo'].errors?.['email']">
+            <small>Correo inválido</small>
+          </ion-text>
 
+          <!-- Contraseña -->
           <ion-item>
-  <ion-input type="password" formControlName="contrasena" placeholder="Contraseña" required></ion-input>
-</ion-item>
-<ion-text color="danger" *ngIf="registroForm.get('contrasena')?.errors?.['minlength'] && registroForm.get('contrasena')?.touched">
-  <small>La contraseña debe tener al menos 4 caracteres</small>
-</ion-text>
+            <ion-input type="password" formControlName="contrasena" placeholder="Contraseña" required></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="f['contrasena'].touched && f['contrasena'].errors?.['required']">
+            <small>La contraseña es obligatoria</small>
+          </ion-text>
+          <ion-text color="danger" *ngIf="f['contrasena'].touched && f['contrasena'].errors?.['minlength']">
+            <small>Debe tener al menos 4 caracteres</small>
+          </ion-text>
+          <ion-text color="danger" *ngIf="f['contrasena'].touched && f['contrasena'].errors?.['pattern']">
+            <small>Debe contener letras y números</small>
+          </ion-text>
 
-
+          <!-- Confirmar contraseña -->
           <ion-item>
-  <ion-input type="password" formControlName="confirmar" placeholder="Confirmar contraseña" required></ion-input>
-</ion-item>
-<ion-text color="danger" *ngIf="registroForm.hasError('noCoinciden') && registroForm.get('confirmar')?.touched">
-  <small>Las contraseñas no coinciden</small>
-</ion-text>
+            <ion-input type="password" formControlName="confirmar" placeholder="Confirmar contraseña" required></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="f['confirmar'].touched && registroForm.hasError('noCoinciden')">
+            <small>Las contraseñas no coinciden</small>
+          </ion-text>
 
+          <!-- Dirección -->
           <ion-item>
             <ion-input formControlName="direccion" placeholder="Dirección" required></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="f['direccion'].touched && f['direccion'].errors?.['required']">
+            <small>La dirección es obligatoria</small>
+          </ion-text>
 
-          <!-- ✅ Campo de fecha MATERIAL fuera de ion-item -->
+          <!-- Fecha de nacimiento con Angular Material -->
           <div class="material-datepicker">
-  <mat-form-field appearance="fill">
-    <mat-label>Fecha de nacimiento</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</div>
-<ion-text color="danger" *ngIf="edadInvalida">
-  <small>Debes tener al menos 18 años</small>
-</ion-text>
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <ion-text color="danger" *ngIf="f['fechaNacimiento'].touched && f['fechaNacimiento'].errors?.['required']">
+            <small>La fecha de nacimiento es obligatoria</small>
+          </ion-text>
+          <ion-text color="danger" *ngIf="edadInvalida">
+            <small>Debes tener al menos 18 años</small>
+          </ion-text>
 
-
+          <!-- Botones -->
           <ion-button expand="block" type="submit">Crear cuenta</ion-button>
           <ion-button expand="block" fill="clear" (click)="volver()">Volver al login</ion-button>
         </form>
