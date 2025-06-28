@@ -50,9 +50,30 @@
                 <ion-textarea formControlName="descripcion" placeholder="Biografía o descripción corta" rows="3"></ion-textarea>
               </ion-item>
 
-              <ion-item>
-                <ion-input formControlName="avatar" placeholder="URL de avatar (opcional)"></ion-input>
-              </ion-item>
+              <ion-item lines="none" class="ion-text-center">
+  <ion-avatar slot="start" style="margin-right: auto; margin-left: auto;">
+    <img *ngIf="fotoPerfil; else sinFoto" [src]="fotoPerfil" />
+    <ng-template #sinFoto>
+      <img src="assets/img/default-avatar.png" />
+    </ng-template>
+  </ion-avatar>
+</ion-item>
+
+<ion-button expand="block" fill="outline" color="medium" (click)="tomarFoto()">
+  Tomar foto de perfil
+</ion-button>
+<ion-button expand="block" fill="outline" color="danger" (click)="eliminarFoto()" [disabled]="!fotoPerfil">
+  Eliminar foto de perfil
+</ion-button>
+<ion-item>
+  <ion-label>Juegos que sigues</ion-label>
+  <ion-select formControlName="juegosSeguidos" multiple="true">
+    <ion-select-option *ngFor="let juego of listaJuegos" [value]="juego">
+      {{ juego }}
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+
 
               <ion-button expand="block" type="submit">Guardar Perfil</ion-button>
               <ion-button expand="block" fill="clear" color="light" (click)="volverInicio()">

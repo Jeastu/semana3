@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
 import { createAnimation } from '@ionic/angular';
+import { JuegosService } from '../../servicios/juegos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-noticias',
@@ -8,43 +10,44 @@ import { createAnimation } from '@ionic/angular';
   standalone: false,
 })
 export class NoticiasPage implements OnInit, AfterViewInit {
-  noticias = [
-    {
-      titulo: 'IGN anuncia nuevos lanzamientos para 2025',
-      descripcion: 'La reconocida web IGN publicó su lista de lanzamientos más esperados para el próximo año.',
-      imagen: 'https://assets-prd.ignimgs.com/2023/07/05/ign-logo-1688595100926.jpg',
-      link: 'https://www.ign.com/articles/upcoming-games-2025'
-    },
-    {
-      titulo: 'Steam lanza descuentos en RPGs clásicos',
-      descripcion: 'Steam sorprende con una oleada de ofertas en juegos de rol legendarios.',
-      imagen: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg',
-      link: 'https://store.steampowered.com/news'
-    },
-    {
-      titulo: 'Epic Games Store regala título sorpresa',
-      descripcion: 'Durante esta semana, Epic Games ofrece un título gratuito que no te puedes perder.',
-      imagen: 'https://cdn2.unrealengine.com/egs-freegames-2023-3840x2160-3840x2160-957f5124d745.jpg',
-      link: 'https://store.epicgames.com/es-ES/free-games'
-    }
-  ];
+  noticias: any[] = [];
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private juegosService: JuegosService,
+    private router: Router,
+    private renderer: Renderer2
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.juegosService.obtenerJuegos().subscribe(
+      (datos: any[]) => {
+        this.noticias = datos.slice(0, 10).map(post => ({
+          titulo: post.title,
+          descripcion: post.body,
+          imagen: 'https://via.placeholder.com/150',
+          link: `https://jsonplaceholder.typicode.com/posts/${post.id}`
+        }));
+      },
+      (error: any) => {
+        console.error('Error al cargar noticias falsas:', error);
+        this.router.navigate(['/error404']); // 👈 Redirige a la página de error
+      }
+    );
+  }
 
   ngAfterViewInit() {
-    const items = document.querySelectorAll('.noticia-item');
-
-    items.forEach((item, i) => {
-      const anim = createAnimation()
-        .addElement(item)
-        .duration(500)
-        .delay(i * 100) // efecto escalonado
-        .fromTo('opacity', '0', '1')
-        .fromTo('transform', 'translateY(20px)', 'translateY(0)');
-      anim.play();
-    });
+    setTimeout(() => {
+      const items = document.querySelectorAll('.noticia-item');
+      items.forEach((item, i) => {
+        const anim = createAnimation()
+          .addElement(item)
+          .duration(500)
+          .delay(i * 100)
+          .fromTo('opacity', '0', '1')
+          .fromTo('transform', 'translateY(20px)', 'translateY(0)');
+        anim.play();
+      });
+    }, 500);
   }
 
   abrirEnlace(link: string) {
