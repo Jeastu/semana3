@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SqliteService } from 'src/app/servicios/sqlite.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private sqliteService: SqliteService) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -20,25 +21,23 @@ export class LoginPage implements OnInit {
     });
   }
 
-  login() {
-    if (!this.loginForm.valid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const { usuario, contrasena } = this.loginForm.value;
-
-    // Simulación de validación
-    const usuarioValido = 'taku';
-    const claveValida = '1234';
-
-    if (usuario === usuarioValido && contrasena === claveValida) {
-      localStorage.setItem('usuario', usuario);
-      this.router.navigate(['/home']);
-    } else {
-      alert('Nombre de usuario o contraseña incorrectos');
-    }
+  async login() {
+  if (!this.loginForm.valid) {
+    this.loginForm.markAllAsTouched();
+    return;
   }
+
+  const { usuario, contrasena } = this.loginForm.value;
+
+  const valido = await this.sqliteService.validarUsuario(usuario, contrasena);
+  if (valido) {
+    localStorage.setItem('usuario', usuario);
+    this.router.navigate(['/home']);
+  } else {
+    alert('Nombre de usuario o contraseña incorrectos');
+  }
+}
+
 
   irARegistro() {
     this.router.navigate(['/registro']);

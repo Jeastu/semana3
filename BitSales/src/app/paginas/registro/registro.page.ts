@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SqliteService } from 'src/app/servicios/sqlite.service';
 
 @Component({
   selector: 'app-registro',
@@ -12,7 +13,8 @@ export class RegistroPage implements OnInit {
   registroForm!: FormGroup;
   edadInvalida = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private sqliteService: SqliteService) {}
+
 
   ngOnInit() {
     this.registroForm = this.fb.group({
@@ -50,28 +52,33 @@ export class RegistroPage implements OnInit {
     return edad;
   }
 
-  registrar() {
-    const datos = this.registroForm.value;
+  async registrar() {
+  const datos = this.registroForm.value;
 
-    if (this.registroForm.invalid) {
-      this.registroForm.markAllAsTouched();
-      return;
-    }
+  if (this.registroForm.invalid) {
+    this.registroForm.markAllAsTouched();
+    return;
+  }
 
-    if (datos.contrasena !== datos.confirmar) {
-      this.registroForm.setErrors({ noCoinciden: true });
-      return;
-    }
+  if (datos.contrasena !== datos.confirmar) {
+    this.registroForm.setErrors({ noCoinciden: true });
+    return;
+  }
 
-    const edad = this.calcularEdad(datos.fechaNacimiento);
-    if (edad < 18) {
-      this.edadInvalida = true;
-      return;
-    }
+  const edad = this.calcularEdad(datos.fechaNacimiento);
+  if (edad < 18) {
+    this.edadInvalida = true;
+    return;
+  }
 
-    console.log('Registro exitoso:', datos);
+  try {
+    await this.sqliteService.registrarUsuario(datos);
     alert('Cuenta creada con éxito');
     this.router.navigate(['/login']);
+  } catch (err) {
+    alert('❌ Error: nombre de usuario ya registrado o problema al guardar.');
   }
+}
+
 }
 
