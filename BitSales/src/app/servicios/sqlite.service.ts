@@ -89,22 +89,55 @@ export class SqliteService {
   }
 
   async insertarPerfil(perfil: any): Promise<void> {
-    if (!this.dbInstance) return;
+  if (!this.dbInstance) return;
 
-    const {
-      usuario,
-      nombreCompleto,
-      telefono,
-      plataforma,
-      categorias,
-      descripcion,
-      avatar,
-      juegosSeguidos,
-    } = perfil;
+  const {
+    usuario,
+    nombreCompleto,
+    telefono,
+    plataforma,
+    categorias,
+    descripcion,
+    avatar,
+    juegosSeguidos,
+  } = perfil;
 
-    try {
+  try {
+    const existe = await this.dbInstance.executeSql(
+      `SELECT COUNT(*) as cantidad FROM perfil_usuario WHERE usuario = ?`,
+      [usuario]
+    );
+
+    const cantidad = existe.rows.item(0).cantidad;
+
+    if (cantidad > 0) {
+      // Actualizar perfil existente
       await this.dbInstance.executeSql(
-        `INSERT OR REPLACE INTO perfil_usuario 
+        `UPDATE perfil_usuario SET 
+          nombreCompleto = ?, 
+          telefono = ?, 
+          plataforma = ?, 
+          categorias = ?, 
+          descripcion = ?, 
+          avatar = ?, 
+          juegosSeguidos = ?
+         WHERE usuario = ?`,
+        [
+          nombreCompleto,
+          telefono,
+          plataforma,
+          categorias.join(','),
+          descripcion,
+          avatar,
+          juegosSeguidos.join(','),
+          usuario
+        ]
+      );
+      console.log('✅ Perfil actualizado');
+    } else {
+      // Insertar nuevo perfil
+      await this.dbInstance.executeSql(
+        `INSERT INTO perfil_usuario 
          (usuario, nombreCompleto, telefono, plataforma, categorias, descripcion, avatar, juegosSeguidos)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
@@ -118,12 +151,14 @@ export class SqliteService {
           juegosSeguidos.join(','),
         ]
       );
-      console.log('✅ Perfil guardado');
-    } catch (err) {
-      console.error('❌ Error al guardar perfil:', err);
-      throw err;
+      console.log('✅ Perfil insertado');
     }
+  } catch (err) {
+    console.error('❌ Error al insertar/actualizar perfil:', err);
+    throw err;
   }
+}
+
 
   async obtenerPerfilPorUsuario(usuario: string): Promise<any | null> {
     if (!this.dbInstance) return null;

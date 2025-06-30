@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { createAnimation } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { SqliteService } from 'src/app/servicios/sqlite.service'; // Asegúrate de importar correctamente
+import { SqliteService } from 'src/app/servicios/sqlite.service'; 
 
 @Component({
   selector: 'app-perfil',
@@ -48,7 +48,7 @@ export class PerfilPage implements OnInit {
     });
   }
 
-  // Animación opcional que ya tienes
+  // Animación opcional 
   const animacionEntrada = createAnimation()
     .addElement(document.querySelector('ion-content')!)
     .duration(500)

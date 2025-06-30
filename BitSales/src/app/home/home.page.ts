@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonPopover } from '@ionic/angular';
+import { SqliteService } from '../servicios/sqlite.service';
+
 
 
 
@@ -80,12 +82,24 @@ export class HomePage implements OnInit {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private sqliteService: SqliteService) {}
+
+  avatar: string = 'https://i.pravatar.cc/100'; // Valor por defecto
+
 
   ngOnInit() {
-    const nombre = localStorage.getItem('usuario');
-    this.usuario = nombre ?? 'Invitado';
+  const nombre = localStorage.getItem('usuario');
+  this.usuario = nombre ?? 'Invitado';
+
+  if (this.usuario && this.usuario !== 'Invitado') {
+    this.sqliteService.obtenerPerfilPorUsuario(this.usuario).then(perfil => {
+      if (perfil?.avatar) {
+        this.avatar = perfil.avatar;
+      }
+    });
   }
+}
+
 
   mostrarMenu(ev: any) {
     this.menuEvent = ev;
@@ -114,4 +128,18 @@ irANoticias() {
   abrirEnlace(link: string) {
     window.open(link, '_blank');
   }
+  
+  ionViewWillEnter() {
+  const nombre = localStorage.getItem('usuario');
+  this.usuario = nombre ?? 'Invitado';
+
+  if (this.usuario && this.usuario !== 'Invitado') {
+    this.sqliteService.obtenerPerfilPorUsuario(this.usuario).then(perfil => {
+      if (perfil?.avatar) {
+        this.avatar = perfil.avatar;
+      }
+    });
+  }
+}
+
 }
